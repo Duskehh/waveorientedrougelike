@@ -21,7 +21,7 @@ public class Enemy extends Entity {
 	}
 
 	public void hit(float damage) {
-		health -= damage;
+		health -= (int) damage;
 		for (int i = 0; i < WORPanel.enemies.size(); i++) {
 			if (WORPanel.enemies.get(i).health <= 0) {
 				WORPanel.enemies.remove(i);
@@ -39,7 +39,6 @@ public class Enemy extends Entity {
 	}
 
 	public float angleToPlayer() {
-
 		return (float) Math.toDegrees(Math.atan2((player.x - x) * -1, player.y - y)) + 90;
 
 	}

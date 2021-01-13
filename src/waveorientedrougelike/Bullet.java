@@ -7,7 +7,6 @@ import java.awt.Rectangle;
 public class Bullet extends Entity {
 
 	float angle;
-	int damage;
 	float velocity;
 
 	public Bullet(int x, int y, int w, int h, int targetx, int targety, float velocity) {
@@ -50,7 +49,6 @@ public class Bullet extends Entity {
 	}
 
 	public void bulletMove() {
-
 		x += Math.cos(Math.toRadians(angle)) * velocity;
 		y += Math.sin(Math.toRadians(angle)) * velocity;
 		this.rect = new Rectangle((int) x - w / 2, (int) y - h / 2, w, h);

@@ -28,10 +28,10 @@ public class WORPanel extends JPanel {
 	boolean isChoosingWeapon = true;;
 
 	private Shape settings = new Rectangle2D.Double(200, 240, 175, 50);
-	private Shape choosepistol = new Rectangle2D.Double(600, 200, 200, 200);
-	private Shape chooseshotgun = new Rectangle2D.Double(600, 400, 200, 200);
-	private Shape choosesniper = new Rectangle2D.Double(600, 600, 200, 200);
-	private Shape chooselmg = new Rectangle2D.Double(400, 600, 200, 200);
+	private Shape choosepistol = new Rectangle2D.Double(400, 200, 200, 200);
+	private Shape chooseshotgun = new Rectangle2D.Double(400, 350, 200, 200);
+	private Shape choosesniper = new Rectangle2D.Double(400, 500, 200, 200);
+	private Shape chooselmg = new Rectangle2D.Double(400, 650, 200, 200);
 	Weapon curW;
 	Weapon shotgun;
 	Weapon pistol;
@@ -46,10 +46,10 @@ public class WORPanel extends JPanel {
 		w1.add(new Wall(20, 750, 1600, 40));
 		w1.add(new Wall(770, 700, 40, 1600));
 		player = new Player(50, 50, 20, 20);
-		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 4, 1000, 1, 1, 1, 1, 1);
-		pistol = new Weapon((int) player.x, (int) player.y, 10, 10, 4, 1000, 1000, 1, 1, 1, 1);
-		sniper = new Weapon((int) player.x, (int) player.y, 40, 5, 4, 1000, 1000, 1, 1, 1, 1);
-		lmg = new Weapon((int) player.x, (int) player.y, 30, 30, 4, 1000, 1000, 1, 1, 1, 1);
+		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 10, 1, 1, 1, 1, 1);
+		pistol = new Weapon((int) player.x, (int) player.y, 10, 10, 20, 20, 60, 1, 1, 1, 1);
+		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 30, 100, 1000, 1, 1, 1, 1);
+		lmg = new Weapon((int) player.x, (int) player.y, 30, 30, 6, 40, 30, 1, 1, 1, 1);
 
 		setFocusable(true);
 		addKeyListener(new KL());
@@ -71,6 +71,7 @@ public class WORPanel extends JPanel {
 	}
 
 	public void update() {
+
 		if (isGame) {
 			player.move();
 			for (Weapon curW : weapons) {
@@ -84,6 +85,7 @@ public class WORPanel extends JPanel {
 			}
 			collisionEnemyBullet();
 		}
+		
 	}
 
 	public int gameState() {
@@ -109,6 +111,7 @@ public class WORPanel extends JPanel {
 				for (int i = 0; i < curW.bullets.size(); i++) {
 					if (enemies.get(k).rect.intersects(curW.bullets.get(i).rect)) {
 						enemies.get(k).hit(curW.dmg);
+						System.out.println(curW.dmg);
 						curW.bullets.remove(i);
 						break;
 					}
@@ -163,10 +166,10 @@ public class WORPanel extends JPanel {
 		if (isChoosingWeapon) {
 			g2d.setColor(Color.BLACK);
 			g2d.setFont(new Font("Arial", Font.PLAIN, 40));
-			g2d.drawString("Shotgun", 600, 400);
-			g2d.drawString("Pistol", 600, 200);
-			g2d.drawString("Sniper", 600, 600);
-			g2d.drawString("Light Machine Gun", 400, 600);
+			g2d.drawString("Shotgun", 400, 350);
+			g2d.drawString("Pistol", 400, 200);
+			g2d.drawString("Sniper", 400, 500);
+			g2d.drawString("Light Machine Gun", 400, 650);
 		}
 
 		repaint();
@@ -249,10 +252,7 @@ public class WORPanel extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 
-			if (!isGame && isMenu && settings.contains(e.getPoint())) {
-				isSettings = true;
-				isMenu = false;
-			}
+			
 		}
 
 		@Override
@@ -284,6 +284,10 @@ public class WORPanel extends JPanel {
 			}
 			if (isGame) {
 				curW.shoot(mouseposition.x, mouseposition.y);
+			}
+			if (!isGame && isMenu && settings.contains(e.getPoint())) {
+				isSettings = true;
+				isMenu = false;
 			}
 		}
 
