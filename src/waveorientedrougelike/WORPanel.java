@@ -15,7 +15,8 @@ public class WORPanel extends JPanel {
 	static final long serialVersionUID = 32423450;
 
 	public Player player;
-	int enemyCount = 5;
+	int waveCount = 1;
+	int enemyCount = waveCount;
 	public static ArrayList<Wall> w1 = new ArrayList<Wall>();
 	public static ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 	public static ArrayList<Weapon> weapons = new ArrayList<Weapon>();
@@ -59,13 +60,6 @@ public class WORPanel extends JPanel {
 		addKeyListener(new KL());
 		addMouseListener(new ML());
 
-		for (int i = 0; i < enemyCount; i++) { // REMOVING ENEMY SPAWNS IN WALL AND IN PLAYER
-			enemies.add(new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 200));
-			if (enemies.get(i).checkCollisionWall() || enemies.get(i).playerInReach()) {
-				enemies.remove(i);
-				i--;
-			}
-		}
 	}
 
 	public void updateEnemies(Graphics2D g2d) {
@@ -78,6 +72,7 @@ public class WORPanel extends JPanel {
 
 		if (isGame) {
 			player.move();
+
 			for (Weapon curW : weapons) {
 				curW.setPosition((int) player.x, (int) player.y);
 			}
@@ -88,8 +83,31 @@ public class WORPanel extends JPanel {
 				curW.bullets.get(i).bulletMove();
 			}
 			collisionEnemyBullet();
+			if (enemies.isEmpty()) {
+				if (enemyCount % 5 == 0) {
+					for (int i = 0; i < 1; i++) {
+						enemies.add(
+								new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 1000 * enemyCount / 2));
+						if (enemies.get(i).checkCollisionWall() || enemies.get(i).playerInReach()) {
+							enemies.remove(i);
+							i--;
+						}
+					}
+				} else {
+					for (int i = 0; i < enemyCount; i++) { // REMOVING ENEMY SPAWNS IN WALL AND IN PLAYER
+						enemies.add(
+								new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 100 * enemyCount / 2));
+						if (enemies.get(i).checkCollisionWall() || enemies.get(i).playerInReach()) {
+							enemies.remove(i);
+							i--;
+						}
+					}
+				}
+				enemyCount++;
+				waveCount = enemyCount;
+			}
 		}
-		
+
 	}
 
 	public int gameState() {
@@ -288,7 +306,7 @@ public class WORPanel extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			Point mouseposition = e.getPoint();
-			
+
 			if (isGame) {
 				curW.shoot(mouseposition.x, mouseposition.y);
 			}
