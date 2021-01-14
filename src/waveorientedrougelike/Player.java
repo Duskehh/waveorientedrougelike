@@ -28,7 +28,7 @@ public class Player extends Entity {
 	public Player(int x, int y, int w, int h) {
 		super(x, y, w, h);
 		try {
-			playerImg = ImageIO.read(getClass().getResource("Player.png"));
+			playerImg = ImageIO.read(getClass().getResource("Standing.gif"));
 		} catch (IOException e) {
 
 			e.printStackTrace();
