@@ -84,10 +84,10 @@ public class WORPanel extends JPanel {
 				curW.bullets.get(i).bulletMove();
 			}
 			collisionEnemyBullet();
-			if (enemies.isEmpty()) { //GENERATION OF WAVES 
+			if (enemies.isEmpty()) { // GENERATION OF WAVES
 				enemyCount++;
 				waveCount = enemyCount;
-				if (waveCount % 5 == 0) {//SPAWNING BOSSMOB EVERY 5 ROUNDS
+				if (waveCount % 5 == 0) {// SPAWNING BOSSMOB EVERY 5 ROUNDS
 					for (int i = 0; i < 1; i++) {
 						enemies.add(
 								new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 1000 * enemyCount / 2));
@@ -96,7 +96,7 @@ public class WORPanel extends JPanel {
 							i--;
 						}
 					}
-				} else {//SPAWNING MOBS 
+				} else {// SPAWNING MOBS
 					for (int i = 0; i < enemyCount; i++) { // REMOVING ENEMY SPAWNS IN WALL AND IN PLAYER
 						enemies.add(
 								new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 100 * enemyCount / 2));
@@ -209,16 +209,23 @@ public class WORPanel extends JPanel {
 		@Override
 		public void keyPressed(KeyEvent e) {
 			if (e.getKeyCode() == KeyEvent.VK_D) {
-				player.vx = 5;
+				// player.vx = 5;
+				player.setMovementDirection(Direction.right);
 			}
 			if (e.getKeyCode() == KeyEvent.VK_A) {
-				player.vx = -5;
+				// player.vx = -5;
+				player.setMovementDirection(Direction.left);
+
 			}
 			if (e.getKeyCode() == KeyEvent.VK_W) {
-				player.vy = -5;
+				// player.vy = -5;
+				player.setMovementDirection(Direction.up);
+
 			}
 			if (e.getKeyCode() == KeyEvent.VK_S) {
-				player.vy = 5;
+				// player.vy = 5;
+				player.setMovementDirection(Direction.down);
+
 			}
 			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 
@@ -256,6 +263,25 @@ public class WORPanel extends JPanel {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
+			if (e.getKeyCode() == KeyEvent.VK_D) {
+				// player.vx = 0;
+				player.resetMovementDirection(Direction.right);
+			}
+			if (e.getKeyCode() == KeyEvent.VK_A) {
+				// player.vx = 0;
+				player.resetMovementDirection(Direction.left);
+
+			}
+			if (e.getKeyCode() == KeyEvent.VK_W) {
+				// player.vy = 0;
+				player.resetMovementDirection(Direction.up);
+
+			}
+			if (e.getKeyCode() == KeyEvent.VK_S) {
+				// player.vy = 0;
+				player.resetMovementDirection(Direction.down);
+
+			}
 			if (e.getKeyCode() == KeyEvent.VK_D) {
 				player.vx = 0;
 			}
