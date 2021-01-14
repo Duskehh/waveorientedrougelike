@@ -55,6 +55,7 @@ public class WORPanel extends JPanel {
 		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 1, 1, 1, 1, 1);
 		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 40, 150, 1000, 1, 1, 1, 1);
 		lmg = new Weapon((int) player.x, (int) player.y, 30, 30, 4, 25, 30, 1, 1, 1, 1);
+		enemies.add(new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 100 * enemyCount / 2));
 
 		setFocusable(true);
 		addKeyListener(new KL());
@@ -69,10 +70,10 @@ public class WORPanel extends JPanel {
 	}
 
 	public void update() {
-
+		System.out.println(enemyCount);
 		if (isGame) {
 			player.move();
-
+			waveCount = enemyCount;
 			for (Weapon curW : weapons) {
 				curW.setPosition((int) player.x, (int) player.y);
 			}
@@ -83,8 +84,10 @@ public class WORPanel extends JPanel {
 				curW.bullets.get(i).bulletMove();
 			}
 			collisionEnemyBullet();
-			if (enemies.isEmpty()) {
-				if (enemyCount % 5 == 0) {
+			if (enemies.isEmpty()) { //GENERATION OF WAVES 
+				enemyCount++;
+				waveCount = enemyCount;
+				if (waveCount % 5 == 0) {//SPAWNING BOSSMOB EVERY 5 ROUNDS
 					for (int i = 0; i < 1; i++) {
 						enemies.add(
 								new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 1000 * enemyCount / 2));
@@ -93,7 +96,7 @@ public class WORPanel extends JPanel {
 							i--;
 						}
 					}
-				} else {
+				} else {//SPAWNING MOBS 
 					for (int i = 0; i < enemyCount; i++) { // REMOVING ENEMY SPAWNS IN WALL AND IN PLAYER
 						enemies.add(
 								new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 100 * enemyCount / 2));
@@ -103,11 +106,8 @@ public class WORPanel extends JPanel {
 						}
 					}
 				}
-				enemyCount++;
-				waveCount = enemyCount;
 			}
 		}
-
 	}
 
 	public int gameState() {
@@ -160,6 +160,9 @@ public class WORPanel extends JPanel {
 				}
 			}
 			player.drawPlayer(g2d);
+			g2d.setColor(Color.CYAN);
+			g2d.setFont(new Font("Arial", Font.PLAIN, 40));
+			g2d.drawString("Wave " + waveCount, 600, 100);
 		}
 
 		if (isMenu) {
