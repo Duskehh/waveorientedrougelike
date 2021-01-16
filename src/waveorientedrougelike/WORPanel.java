@@ -27,7 +27,7 @@ public class WORPanel extends JPanel {
 	boolean isSettings = false;
 	boolean isGame = false;
 	boolean isChoosingWeapon = true;;
-
+	//"HITBOXES" FOR MENU AND SIMILAR
 	private Shape settings = new Rectangle2D.Double(200, 240, 175, 50);
 	private Shape choosepistol = new Rectangle2D.Double(100, 150, 200, 100);
 	private Shape chooseshotgun = new Rectangle2D.Double(100, 300, 200, 100);
@@ -90,7 +90,7 @@ public class WORPanel extends JPanel {
 				if (waveCount % 5 == 0) {// SPAWNING BOSSMOB EVERY 5 ROUNDS
 					for (int i = 0; i < 1; i++) {
 						enemies.add(
-								new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 1000 * enemyCount / 2));
+								new Enemy(rand.nextInt(800), rand.nextInt(600), 50, 50, player, 1000 * enemyCount / 2));
 						if (enemies.get(i).checkCollisionWall() || enemies.get(i).playerInReach()) {
 							enemies.remove(i);
 							i--;
@@ -141,7 +141,6 @@ public class WORPanel extends JPanel {
 			}
 		}
 	}
-
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -164,7 +163,6 @@ public class WORPanel extends JPanel {
 			g2d.setFont(new Font("Arial", Font.PLAIN, 40));
 			g2d.drawString("Wave " + waveCount, 600, 100);
 		}
-
 		if (isMenu) {
 			isGame = false;
 			g2d.setColor(Color.BLACK);
@@ -199,11 +197,9 @@ public class WORPanel extends JPanel {
 				g2d.draw(s);
 			}
 		}
-
 		repaint();
 		Toolkit.getDefaultToolkit().sync();
 	}
-
 	class KL implements KeyListener {
 
 		@Override
@@ -227,7 +223,7 @@ public class WORPanel extends JPanel {
 				player.setMovementDirection(Direction.down);
 
 			}
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {//MANEUVERING THROUGH THE MENU
 
 				switch (gameState()) {
 				case 0:
