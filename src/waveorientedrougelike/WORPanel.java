@@ -26,7 +26,8 @@ public class WORPanel extends JPanel {
 	boolean isMenu = false;
 	boolean isSettings = false;
 	boolean isGame = false;
-	boolean isChoosingWeapon = true;;
+	boolean isChoosingWeapon = true;
+	boolean isGameOver = false;
 
 	private Shape settings = new Rectangle2D.Double(200, 240, 175, 50);
 	private Shape choosepistol = new Rectangle2D.Double(100, 150, 200, 100);
@@ -85,6 +86,7 @@ public class WORPanel extends JPanel {
 			}
 
 			player.checkCollisionEnemy();
+			
 			System.out.println(player.health);
 			if(player.health <= 0) {
 				
@@ -132,6 +134,9 @@ public class WORPanel extends JPanel {
 		if (isChoosingWeapon) {
 			gState = 3;
 		}
+		if(isGameOver) {
+			gState = 4;
+		}
 		return gState;
 	}
 
@@ -171,6 +176,11 @@ public class WORPanel extends JPanel {
 			g2d.setColor(Color.CYAN);
 			g2d.setFont(new Font("Arial", Font.PLAIN, 40));
 			g2d.drawString("Wave " + waveCount, 600, 100);
+			
+			if(player.health <= 0) {
+				isGame = false;
+				isGameOver = true;
+			}
 		}
 
 		if (isMenu) {
@@ -206,8 +216,14 @@ public class WORPanel extends JPanel {
 			for (Shape s : shapes) {
 				g2d.draw(s);
 			}
+			
+			
 		}
-
+		if (isGameOver) {
+			g2d.setColor(Color.BLACK);
+			g2d.setFont(new Font("Arial", Font.PLAIN, 40));
+			g2d.drawString("Game Over", getWidth() / 4, getHeight() / 2);
+		}
 		repaint();
 		Toolkit.getDefaultToolkit().sync();
 	}

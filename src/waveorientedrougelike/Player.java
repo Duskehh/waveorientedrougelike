@@ -28,11 +28,12 @@ public class Player extends Entity {
 	int playerSpeed = 5;
 	public int health = 0;
 	private Enemy enemy;
+	private float timerin = 0.00f;
 
 	public Player(int x, int y, int w, int h, int health) {
 		super(x, y, w, h);
 		this.health = health;
-		this.enemy = enemy;
+		// this.enemy = enemy;
 		importPlayertextures();
 		// playerImg = ImageIO.read(getClass().getResource("Standing.gif"));
 
@@ -84,13 +85,19 @@ public class Player extends Entity {
 	}
 
 	public boolean checkCollisionEnemy() {
-		for (Enemy enemy : WORPanel.enemies) {
-			if (rect.intersects(enemy.rect)) {
-				health -= enemy.damage;
+			for (Enemy enemy : WORPanel.enemies) {
+				timerin += 0.02;
+				if (rect.intersects(enemy.rect)) {
+				if(timerin >= 1) {
+					health -= enemy.damage;
+					timerin = 0;
+					
+					}
 				return true;
 			}
 		}
 		return false;
+		
 	}
 
 	private void importPlayertextures() {
@@ -154,8 +161,9 @@ public class Player extends Entity {
 
 		}
 	}
-	public void playerDie() {
-		 
-	}
+	
+	
+
+	
 
 }
