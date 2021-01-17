@@ -222,7 +222,8 @@ public class WORPanel extends JPanel {
 		if (isGameOver) {
 			g2d.setColor(Color.BLACK);
 			g2d.setFont(new Font("Arial", Font.PLAIN, 40));
-			g2d.drawString("Game Over", getWidth() / 4, getHeight() / 2);
+			g2d.drawString("Game Over", getWidth() / 3, getHeight() / 2);
+			g2d.drawRect(210, 340, 300, 60);
 		}
 		repaint();
 		Toolkit.getDefaultToolkit().sync();
