@@ -14,7 +14,7 @@ public class WORPanel extends JPanel {
 
 	static final long serialVersionUID = 32423450;
 
-	public Player player;
+	public static Player player;
 	int waveCount = 1;
 	int enemyCount = waveCount;
 	public static ArrayList<Wall> w1 = new ArrayList<Wall>();
@@ -50,7 +50,7 @@ public class WORPanel extends JPanel {
 		w1.add(new Wall(20, 20, 1600, 40));
 		w1.add(new Wall(20, 750, 1600, 40));
 		w1.add(new Wall(770, 700, 40, 1600));
-		player = new Player(50, 50, 20, 20);
+		player = new Player(50, 50, 20, 20, 100);
 		pistol = new Weapon((int) player.x, (int) player.y, 10, 10, 20, 50, 60, 1, 1, 1, 1);
 		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 1, 1, 1, 1, 1);
 		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 40, 150, 1000, 1, 1, 1, 1);
@@ -83,6 +83,13 @@ public class WORPanel extends JPanel {
 			for (int i = 0; i < curW.bullets.size(); i++) {
 				curW.bullets.get(i).bulletMove();
 			}
+
+			player.checkCollisionEnemy();
+			System.out.println(player.health);
+			if(player.health <= 0) {
+				gameOver();
+			}
+
 			collisionEnemyBullet();
 			if (enemies.isEmpty()) { // GENERATION OF WAVES
 				enemyCount++;
@@ -108,6 +115,7 @@ public class WORPanel extends JPanel {
 				}
 			}
 		}
+
 	}
 
 	public int gameState() {
@@ -363,4 +371,5 @@ public class WORPanel extends JPanel {
 		}
 
 	}
+
 }
