@@ -13,7 +13,7 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class Player extends Entity {
-//private BufferedImage playerImg;
+	// private BufferedImage playerImg;
 	private int iconIndex = 0;
 	private Image[] playerIcons = new Image[5];
 	int vx;
@@ -26,9 +26,13 @@ public class Player extends Entity {
 	float bulletcount = 0.0f;
 	float range = 0.0f;
 	int playerSpeed = 5;
+	public int health = 0;
+	private Enemy enemy;
 
-	public Player(int x, int y, int w, int h) {
+	public Player(int x, int y, int w, int h, int health) {
 		super(x, y, w, h);
+		this.health = health;
+		this.enemy = enemy;
 		importPlayertextures();
 		// playerImg = ImageIO.read(getClass().getResource("Standing.gif"));
 
@@ -81,8 +85,8 @@ public class Player extends Entity {
 
 	public boolean checkCollisionEnemy() {
 		for (Enemy enemy : WORPanel.enemies) {
-
 			if (rect.intersects(enemy.rect)) {
+				health -= enemy.damage;
 				return true;
 			}
 		}
@@ -92,7 +96,7 @@ public class Player extends Entity {
 	private void importPlayertextures() {
 		playerIcons[0] = new ImageIcon(getClass().getResource("Standing.gif")).getImage(); // Standing.gif
 		playerIcons[1] = new ImageIcon(getClass().getResource("walkingLeft.gif")).getImage(); // Left
-		playerIcons[2] = new ImageIcon(getClass().getResource("walkingRight.gif")).getImage(); // right
+		playerIcons[2] = new ImageIcon(getClass().getResource("walkingRight.gif")).getImage(); // rigth
 		playerIcons[3] = new ImageIcon(getClass().getResource("walkingLeft.gif")).getImage(); // up
 		playerIcons[4] = new ImageIcon(getClass().getResource("walkingRight.gif")).getImage(); // down
 
@@ -150,4 +154,8 @@ public class Player extends Entity {
 
 		}
 	}
+	public void playerDie() {
+		 
+	}
+
 }

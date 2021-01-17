@@ -13,6 +13,9 @@ public class Enemy extends Entity {
 	private float timerin = 0.00f;
 	private int health = 0;
 	Bullet curB;
+	float damage = 10;
+	
+	
 
 	public Enemy(int x, int y, int w, int h, Player player, int health) {
 		super(x, y, w, h);
