@@ -87,7 +87,7 @@ public class WORPanel extends JPanel {
 			player.checkCollisionEnemy();
 			System.out.println(player.health);
 			if(player.health <= 0) {
-				gameOver();
+				
 			}
 
 			collisionEnemyBullet();
