@@ -2,12 +2,13 @@ package waveorientedrougelike;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-public class Weapon extends Entity {
+public class Weapon extends Entity implements Runnable {
 
-	public ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+	public static ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 	public float velocity = 0.0f;
 	float dmg = 0.0f;
 	float firerate = 0.0f;
@@ -15,7 +16,9 @@ public class Weapon extends Entity {
 	float spread = 0.0f;
 	float bulletcount = 0.0f;
 	float range = 0.0f;
-	private float timerin = 0.0f;
+	float timerin = 0.0f;
+	boolean shooting = false;
+	public static int targetx, targety;
 
 	public Weapon(int x, int y, int w, int h, float velocity, float dmg, float firerate, int homing, float spread,
 			float bulletcount, float range) {
@@ -27,19 +30,18 @@ public class Weapon extends Entity {
 		this.spread = spread;
 		this.bulletcount = bulletcount;
 		this.range = range;
+		new Thread(this).start();
 	}
 
-	public void shoot(int targetx, int targety) {
-		while (bullets.isEmpty()) {
-			bullets.add(new Bullet((int) x, (int) y, 10, 10, targetx, targety, velocity));
-		}
-		if(timerin<=firerate) {
-			bullets.add(new Bullet((int) x, (int) y, 10, 10, targetx, targety, velocity));
-			timerin = 0;
-		}
+	public void startshooting(int targetx, int targety) {
+		this.targetx = targetx;
+		this.targety = targety;
+		shooting = true;
 	}
 
-	
+	public void stopshooting() {
+		shooting = false;
+	}
 
 	public void setPosition(int x, int y) {
 		this.x = x;
@@ -51,7 +53,6 @@ public class Weapon extends Entity {
 			bullets.get(i).drawBullet(g2d);
 
 		}
-
 	}
 
 	public void drawWeapon(Graphics2D g2d) {
@@ -60,4 +61,28 @@ public class Weapon extends Entity {
 		updateBullets(g2d);
 	}
 
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while (true) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			while (shooting) {
+				try {
+					Thread.sleep((long) (100));
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				bullets.add(new Bullet((int) x, (int) y, 10, 10, targetx, targety, velocity));
+				
+				
+				
+			}
+		}
+	}
 }

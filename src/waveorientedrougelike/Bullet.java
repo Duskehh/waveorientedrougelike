@@ -52,6 +52,9 @@ public class Bullet extends Entity {
 		x += Math.cos(Math.toRadians(angle)) * velocity;
 		y += Math.sin(Math.toRadians(angle)) * velocity;
 		this.rect = new Rectangle((int) x - w / 2, (int) y - h / 2, w, h);
+		if(checkCollisionWall()) {
+			
+		}
 
 	}
 }

@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,7 +35,8 @@ public class WORPanel extends JPanel {
 	private Shape chooseshotgun = new Rectangle2D.Double(100, 300, 200, 100);
 	private Shape choosesniper = new Rectangle2D.Double(100, 450, 200, 100);
 	private Shape chooselmg = new Rectangle2D.Double(100, 600, 325, 75);
-	Weapon curW;
+	static Weapon curW;
+
 	Weapon shotgun;
 	Weapon pistol;
 	Weapon sniper;
@@ -51,8 +53,9 @@ public class WORPanel extends JPanel {
 		w1.add(new Wall(20, 20, 1600, 40));
 		w1.add(new Wall(20, 750, 1600, 40));
 		w1.add(new Wall(770, 700, 40, 1600));
+		w1.add(new Wall(400, 400, 400, 400));
 		player = new Player(50, 50, 20, 20, 100);
-		pistol = new Weapon((int) player.x, (int) player.y, 10, 10, 20, 50, 60, 1, 2.0f, 1, 1);
+		pistol = new Weapon((int) player.x, (int) player.y, 10, 10, 1, 50, 60, 1, 0.5f, 1, 1);
 		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 1, 1, 5, 1, 1);
 		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 40, 150, 1000, 1, 10, 1, 1);
 		lmg = new Weapon((int) player.x, (int) player.y, 30, 30, 4, 25, 30, 1, 1, 1, 1);
@@ -61,6 +64,7 @@ public class WORPanel extends JPanel {
 		setFocusable(true);
 		addKeyListener(new KL());
 		addMouseListener(new ML());
+		addMouseMotionListener(new MML());
 
 	}
 
@@ -83,9 +87,19 @@ public class WORPanel extends JPanel {
 			for (int i = 0; i < curW.bullets.size(); i++) {
 				curW.bullets.get(i).bulletMove();
 			}
-	
-			player.checkCollisionEnemy();
+			ArrayList<Integer> indexes = null;
+			for (int i = 0; i < curW.bullets.size(); i++) {
+				indexes = new ArrayList<>();
+				for (Wall walls : w1) {
+					if (walls.rect.intersects(curW.bullets.get(i).rect)) {
+						indexes.add(i);
+					}
+				}
+				removeBullets(indexes);
+			}
+			
 
+			player.checkCollisionEnemy();
 
 			collisionEnemyBullet();
 			if (enemies.isEmpty()) { // GENERATION OF WAVES
@@ -129,7 +143,7 @@ public class WORPanel extends JPanel {
 		if (isChoosingWeapon) {
 			gState = 3;
 		}
-		if(isGameOver) {
+		if (isGameOver) {
 			gState = 4;
 		}
 		return gState;
@@ -148,6 +162,18 @@ public class WORPanel extends JPanel {
 			}
 		}
 	}
+	
+	public void removeBullets(ArrayList<Integer> bullets) {
+		for(int i = 0; i< bullets.size(); i++) {
+			try {
+				curW.bullets.remove(i);
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			
+		}
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -170,7 +196,7 @@ public class WORPanel extends JPanel {
 			g2d.setFont(new Font("Arial", Font.PLAIN, 40));
 			g2d.drawString("Wave " + waveCount, 600, 100);
 
-			if(player.health <= 0) {
+			if (player.health <= 0) {
 				isGame = false;
 				isGameOver = true;
 			}
@@ -209,7 +235,6 @@ public class WORPanel extends JPanel {
 				g2d.draw(s);
 			}
 
-
 		}
 		if (isGameOver) {
 			g2d.setColor(Color.BLACK);
@@ -220,6 +245,7 @@ public class WORPanel extends JPanel {
 		repaint();
 		Toolkit.getDefaultToolkit().sync();
 	}
+
 	class KL implements KeyListener {
 
 		@Override
@@ -243,7 +269,7 @@ public class WORPanel extends JPanel {
 				player.setMovementDirection(Direction.down);
 
 			}
-			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {//MANEUVERING THROUGH THE MENU
+			if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {// MANEUVERING THROUGH THE MENU
 
 				switch (gameState()) {
 				case 0:
@@ -352,7 +378,8 @@ public class WORPanel extends JPanel {
 		public void mousePressed(MouseEvent e) {
 			Point mouseposition = e.getPoint();
 			if (isGame) {
-				curW.shoot(mouseposition.x, mouseposition.y);
+				curW.startshooting(mouseposition.x, mouseposition.y);
+
 			}
 			if (!isGame && isMenu && settings.contains(e.getPoint())) {
 				isSettings = true;
@@ -362,8 +389,9 @@ public class WORPanel extends JPanel {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
+			if (isGame) {
+				curW.stopshooting();
+			}
 		}
 
 		@Override
@@ -373,6 +401,23 @@ public class WORPanel extends JPanel {
 
 		@Override
 		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+
+	class MML implements MouseMotionListener {
+
+		@Override
+		public void mouseDragged(MouseEvent e) {
+			// TODO Auto-generated method stub
+			curW.targetx = e.getX();
+			curW.targety = e.getY();
+		}
+
+		@Override
+		public void mouseMoved(MouseEvent e) {
 			// TODO Auto-generated method stub
 
 		}
