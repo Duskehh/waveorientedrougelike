@@ -15,6 +15,7 @@ public class Weapon extends Entity {
 	float spread = 0.0f;
 	float bulletcount = 0.0f;
 	float range = 0.0f;
+	private float timerin = 0.0f;
 
 	public Weapon(int x, int y, int w, int h, float velocity, float dmg, float firerate, int homing, float spread,
 			float bulletcount, float range) {
@@ -29,8 +30,16 @@ public class Weapon extends Entity {
 	}
 
 	public void shoot(int targetx, int targety) {
-		bullets.add(new Bullet((int) x, (int) y, 10, 10, targetx, targety, velocity));
+		while (bullets.isEmpty()) {
+			bullets.add(new Bullet((int) x, (int) y, 10, 10, targetx, targety, velocity));
+		}
+		if(timerin<=firerate) {
+			bullets.add(new Bullet((int) x, (int) y, 10, 10, targetx, targety, velocity));
+			timerin = 0;
+		}
 	}
+
+	
 
 	public void setPosition(int x, int y) {
 		this.x = x;

@@ -50,7 +50,7 @@ public class Enemy extends Entity {
 
 		int px = (int) x;
 		int py = (int) y;
-		if (playerInReach() == false) {
+		if (playerInReach() == false) { //DEPENDING ON timerin THE MOVEMENT DIRECTION CHANGES
 			switch ((int) timerin) {
 			case 0:
 				x += vx;

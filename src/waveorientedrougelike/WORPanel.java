@@ -52,9 +52,9 @@ public class WORPanel extends JPanel {
 		w1.add(new Wall(20, 750, 1600, 40));
 		w1.add(new Wall(770, 700, 40, 1600));
 		player = new Player(50, 50, 20, 20, 100);
-		pistol = new Weapon((int) player.x, (int) player.y, 10, 10, 20, 50, 60, 1, 1, 1, 1);
-		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 1, 1, 1, 1, 1);
-		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 40, 150, 1000, 1, 1, 1, 1);
+		pistol = new Weapon((int) player.x, (int) player.y, 10, 10, 20, 50, 60, 1, 2.0f, 1, 1);
+		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 1, 1, 5, 1, 1);
+		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 40, 150, 1000, 1, 10, 1, 1);
 		lmg = new Weapon((int) player.x, (int) player.y, 30, 30, 4, 25, 30, 1, 1, 1, 1);
 		enemies.add(new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 100 * enemyCount / 2));
 
@@ -71,7 +71,6 @@ public class WORPanel extends JPanel {
 	}
 
 	public void update() {
-		System.out.println(enemyCount);
 		if (isGame) {
 			player.move();
 			waveCount = enemyCount;
@@ -84,13 +83,9 @@ public class WORPanel extends JPanel {
 			for (int i = 0; i < curW.bullets.size(); i++) {
 				curW.bullets.get(i).bulletMove();
 			}
-
+	
 			player.checkCollisionEnemy();
 
-			System.out.println(player.health);
-			if(player.health <= 0) {
-
-			}
 
 			collisionEnemyBullet();
 			if (enemies.isEmpty()) { // GENERATION OF WAVES
@@ -146,7 +141,6 @@ public class WORPanel extends JPanel {
 				for (int i = 0; i < curW.bullets.size(); i++) {
 					if (enemies.get(k).rect.intersects(curW.bullets.get(i).rect)) {
 						enemies.get(k).hit(curW.dmg);
-						System.out.println(curW.dmg);
 						curW.bullets.remove(i);
 						break;
 					}
@@ -357,7 +351,6 @@ public class WORPanel extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			Point mouseposition = e.getPoint();
-
 			if (isGame) {
 				curW.shoot(mouseposition.x, mouseposition.y);
 			}
