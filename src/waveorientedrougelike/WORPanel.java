@@ -35,6 +35,7 @@ public class WORPanel extends JPanel {
 	private Shape chooseshotgun = new Rectangle2D.Double(100, 300, 200, 100);
 	private Shape choosesniper = new Rectangle2D.Double(100, 450, 200, 100);
 	private Shape chooselmg = new Rectangle2D.Double(100, 600, 325, 75);
+	private Shape healthBar = new Rectangle2D.Double(50, 700, 100, 50);
 	static Weapon curW;
 
 	Weapon shotgun;
@@ -49,17 +50,18 @@ public class WORPanel extends JPanel {
 		shapes.add(chooseshotgun);
 		shapes.add(choosesniper);
 		shapes.add(chooselmg);
+		shapes.add(healthBar);
 		w1.add(new Wall(20, 20, 40, 1600));
 		w1.add(new Wall(20, 20, 1600, 40));
 		w1.add(new Wall(20, 750, 1600, 40));
 		w1.add(new Wall(770, 700, 40, 1600));
 		w1.add(new Wall(400, 400, 400, 400));
 		player = new Player(50, 50, 20, 20, 100);
-		pistol = new Weapon((int) player.x, (int) player.y, 10, 10, 1, 50, 60, 1, 0.5f, 1, 1);
-		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 1, 1, 5, 1, 1);
-		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 40, 150, 1000, 1, 10, 1, 1);
-		lmg = new Weapon((int) player.x, (int) player.y, 30, 30, 4, 25, 30, 1, 1, 1, 1);
-		enemies.add(new Enemy(rand.nextInt(800), rand.nextInt(600), 20, 20, player, 100 * enemyCount / 2));
+		pistol = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 160, 1, 900, 1, 1);
+		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 500, 1, 50, 1, 1);
+		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 20, 150, 1000, 1, 10, 1, 1);
+		lmg = new Weapon((int) player.x, (int) player.y, 30, 30, 4, 25, 60, 60, 1, 1, 1);
+		enemies.add(new Enemy(rand.nextInt(800), rand.nextInt(800), 20, 20, player, 100 * enemyCount / 2));
 
 		setFocusable(true);
 		addKeyListener(new KL());
@@ -192,6 +194,11 @@ public class WORPanel extends JPanel {
 				}
 			}
 			player.drawPlayer(g2d);
+			g2d.setFont(new Font("Arial", Font.PLAIN, 30));
+			g2d.draw(healthBar);
+			g2d.fillRect(50, 700, player.health, 50);
+			g2d.setColor(Color.WHITE);
+			g2d.drawString(player.health + "%", 65, 735);
 			g2d.setColor(Color.CYAN);
 			g2d.setFont(new Font("Arial", Font.PLAIN, 40));
 			g2d.drawString("Wave " + waveCount, 600, 100);

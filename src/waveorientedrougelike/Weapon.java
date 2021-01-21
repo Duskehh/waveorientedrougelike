@@ -73,7 +73,7 @@ public class Weapon extends Entity implements Runnable {
 			}
 			while (shooting) {
 				try {
-					Thread.sleep((long) (100));
+					Thread.sleep((long) (firerate));
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
