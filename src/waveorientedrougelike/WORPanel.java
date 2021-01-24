@@ -57,7 +57,7 @@ public class WORPanel extends JPanel {
 		w1.add(new Wall(770, 700, 40, 1600));
 		w1.add(new Wall(400, 400, 400, 400));
 		player = new Player(50, 50, 20, 20, 100);
-		pistol = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 160, 1, 900, 1, 1);
+		pistol = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 2000, 160, 1, 900, 1, 1);
 		shotgun = new Weapon((int) player.x, (int) player.y, 20, 20, 10, 20, 500, 1, 50, 1, 1);
 		sniper = new Weapon((int) player.x, (int) player.y, 40, 1, 20, 150, 1000, 1, 10, 1, 1);
 		lmg = new Weapon((int) player.x, (int) player.y, 30, 30, 4, 25, 60, 60, 1, 1, 1);
@@ -108,7 +108,8 @@ public class WORPanel extends JPanel {
 				enemyCount++;
 				waveCount = enemyCount;
 				if (waveCount % 5 == 0) {// SPAWNING BOSSMOB EVERY 5 ROUNDS
-					for (int i = 0; i < 1; i++) {
+					for (int i = 
+							0; i < 1; i++) {
 						enemies.add(
 								new Enemy(rand.nextInt(800), rand.nextInt(600), 50, 50, player, 1000 * enemyCount / 2));
 						if (enemies.get(i).checkCollisionWall() || enemies.get(i).playerInReach()) {
